@@ -2,8 +2,9 @@
 from __future__ import annotations
 
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
+from urllib.parse import parse_qsl
 
 from dotenv import load_dotenv
 
@@ -27,6 +28,7 @@ class APISettings:
     timeout: int = 30
     id_field: str = "id"
     data_key: str = ""
+    query_params: dict[str, str] = field(default_factory=dict)
 
     def __repr__(self) -> str:  # never expose the API key
         return f"APISettings(base_url={self.base_url!r}, endpoint={self.endpoint!r}, api_key='***')"
@@ -70,6 +72,7 @@ class Settings:
                 timeout=int(os.getenv("API_TIMEOUT", "30")),
                 id_field=os.getenv("API_ID_FIELD", "id"),
                 data_key=os.getenv("API_DATA_KEY", "").strip(),
+                query_params=dict(parse_qsl(os.getenv("API_QUERY_PARAMS", "").strip())),
             ),
             database=DatabaseSettings(
                 host=_require("DB_HOST"),

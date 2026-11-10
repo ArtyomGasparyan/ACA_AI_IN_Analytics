@@ -43,6 +43,7 @@ class APIClient:
         """GET an endpoint and return the decoded JSON body."""
         endpoint = endpoint or self.settings.endpoint
         url = f"{self.settings.base_url.rstrip('/')}/{endpoint.lstrip('/')}"
+        params = {**self.settings.query_params, **(params or {})}
         logger.info("GET %s", url)
         try:
             response = self.session.get(url, params=params, timeout=self.settings.timeout)

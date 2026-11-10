@@ -39,11 +39,12 @@ copy .env.example .env   # then edit .env with real values
 
 | Variable | Description |
 |---|---|
-| `API_BASE_URL`, `API_ENDPOINT` | API location |
+| `API_BASE_URL`, `API_ENDPOINT` | API location (Mediastack via APILayer: `https://api.apilayer.com` + `/media_stack/news`) |
 | `API_KEY` | API key (required) |
-| `API_KEY_HEADER` / `API_KEY_PREFIX` | Header name (default `X-API-Key`) and optional prefix such as `Bearer` |
-| `API_ID_FIELD` | JSON field that uniquely identifies a record (default `id`) |
-| `API_DATA_KEY` | Key holding the list of records, empty if the response is a list |
+| `API_KEY_HEADER` / `API_KEY_PREFIX` | Header name (`apikey` for APILayer) and optional prefix such as `Bearer` |
+| `API_ID_FIELD` | JSON field that uniquely identifies a record (`url` for Mediastack news) |
+| `API_DATA_KEY` | Key holding the list of records (`data` for Mediastack), empty if the response is a list |
+| `API_QUERY_PARAMS` | Optional query string, e.g. `countries=us&languages=en&limit=100` |
 | `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` | Remote MySQL connection |
 | `DB_SSL_CA` | Optional CA certificate path to enforce SSL |
 | `RAW_DATA_DIR`, `LOG_LEVEL` | Storage folder and log level |

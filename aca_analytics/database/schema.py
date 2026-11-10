@@ -33,7 +33,7 @@ API_RECORDS_TABLE = TableSchema(
     ddl="""
         CREATE TABLE IF NOT EXISTS api_records (
             id           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-            external_id  VARCHAR(191)    NOT NULL,
+            external_id  VARCHAR(512)    NOT NULL,
             payload      JSON            NOT NULL,
             ingested_at  TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP
                                          ON UPDATE CURRENT_TIMESTAMP,
