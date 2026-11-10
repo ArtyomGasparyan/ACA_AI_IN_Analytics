@@ -10,7 +10,7 @@ import argparse
 import sys
 
 from aca_analytics.clients import APIError
-from aca_analytics.config import Settings
+from aca_analytics.config import ConfigError, Settings
 from aca_analytics.services import IngestionPipeline
 from aca_analytics.utils import get_logger, setup_logging
 
@@ -25,7 +25,7 @@ def main() -> int:
     args = build_parser().parse_args()
     try:
         settings = Settings.from_env()
-    except ValueError as exc:
+    except ConfigError as exc:
         print(f"Configuration error: {exc}", file=sys.stderr)
         return 2
 

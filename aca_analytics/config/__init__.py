@@ -1,3 +1,3 @@
-from aca_analytics.config.settings import APISettings, DatabaseSettings, Settings
+from aca_analytics.config.settings import APISettings, ConfigError, DatabaseSettings, Settings
 
-__all__ = ["APISettings", "DatabaseSettings", "Settings"]
+__all__ = ["APISettings", "ConfigError", "DatabaseSettings", "Settings"]

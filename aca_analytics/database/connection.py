@@ -41,9 +41,22 @@ class MySQLConnection:
             self._conn = mysql.connector.connect(**params)
         except MySQLError as exc:
             raise ConnectionError(
-                f"Could not connect to MySQL at {self.settings.host}:{self.settings.port}: {exc}"
-            ) from exc
+                f"Could not connect to MySQL at {self.settings.host}:{self.settings.port} "
+                f"(error {exc.errno}: {exc.msg}). {self._hint(exc.errno)}"
+            ) from None
         logger.info("Connected to MySQL at %s:%s", self.settings.host, self.settings.port)
+
+    @staticmethod
+    def _hint(errno: int | None) -> str:
+        hints = {
+            1045: "Wrong DB_USER or DB_PASSWORD in .env, or this user is not allowed from your IP.",
+            1049: "Database does not exist. Run 'python main.py init-db' or fix DB_NAME in .env.",
+            1044: "The user lacks privileges on this database. Ask the DB admin to grant access.",
+            2003: "Server unreachable. Check DB_HOST and DB_PORT in .env, the firewall, and that your IP is allowed.",
+            2005: "Unknown host. Check DB_HOST in .env.",
+            2026: "SSL handshake failed. Check DB_SSL_CA in .env.",
+        }
+        return hints.get(errno or 0, "Check the DB_* settings in .env.")
 
     def close(self) -> None:
         if self._conn is not None and self._conn.is_connected():

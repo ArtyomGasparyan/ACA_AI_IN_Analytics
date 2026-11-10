@@ -14,7 +14,10 @@ class Record:
     @classmethod
     def from_api(cls, item: dict[str, Any], id_field: str = "id") -> "Record":
         if id_field not in item:
-            raise ValueError(f"Record is missing id field '{id_field}'")
+            raise ValueError(
+                f"A record is missing the id field '{id_field}'. "
+                f"Fix API_ID_FIELD in .env. Fields available: {sorted(item.keys())}"
+            )
         return cls(external_id=str(item[id_field]), payload=item)
 
     def to_row(self) -> dict[str, Any]:
