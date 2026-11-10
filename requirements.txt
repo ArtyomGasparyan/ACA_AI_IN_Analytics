@@ -1,0 +1,11 @@
+# HTTP client for the JSON API
+requests==2.32.3
+
+# Load configuration and secrets from .env
+python-dotenv==1.0.1
+
+# MySQL driver (remote connection, SSL supported)
+mysql-connector-python==9.1.0
+
+# Testing
+pytest==8.3.3
