@@ -25,6 +25,7 @@ class APISettings:
     api_key: str = ""
     key_header: str = "X-API-Key"
     key_prefix: str = ""
+    key_param: str = ""  # if set, send the key as this query parameter instead of a header
     timeout: int = 30
     id_field: str = "id"
     data_key: str = ""
@@ -69,6 +70,7 @@ class Settings:
                 api_key=_require("API_KEY"),
                 key_header=os.getenv("API_KEY_HEADER", "X-API-Key"),
                 key_prefix=os.getenv("API_KEY_PREFIX", "").strip(),
+                key_param=os.getenv("API_KEY_PARAM", "").strip(),
                 timeout=int(os.getenv("API_TIMEOUT", "30")),
                 id_field=os.getenv("API_ID_FIELD", "id"),
                 data_key=os.getenv("API_DATA_KEY", "").strip(),

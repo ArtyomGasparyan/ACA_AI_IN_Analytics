@@ -42,6 +42,7 @@ copy .env.example .env   # then edit .env with real values
 | `API_BASE_URL`, `API_ENDPOINT` | API location (Mediastack via APILayer: `https://api.apilayer.com` + `/media_stack/news`) |
 | `API_KEY` | API key (required) |
 | `API_KEY_HEADER` / `API_KEY_PREFIX` | Header name (`apikey` for APILayer) and optional prefix such as `Bearer` |
+| `API_KEY_PARAM` | If set (e.g. `access_key`), the key is sent as a query parameter instead of a header |
 | `API_ID_FIELD` | JSON field that uniquely identifies a record (`url` for Mediastack news) |
 | `API_DATA_KEY` | Key holding the list of records (`data` for Mediastack), empty if the response is a list |
 | `API_QUERY_PARAMS` | Optional query string, e.g. `countries=us&languages=en&limit=100` |

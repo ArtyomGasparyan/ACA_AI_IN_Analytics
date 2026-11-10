@@ -24,10 +24,12 @@ class APIClient:
 
     def _build_session(self) -> requests.Session:
         session = requests.Session()
-        value = self.settings.api_key
-        if self.settings.key_prefix:
-            value = f"{self.settings.key_prefix} {value}"
-        session.headers.update({self.settings.key_header: value, "Accept": "application/json"})
+        session.headers.update({"Accept": "application/json"})
+        if not self.settings.key_param:
+            value = self.settings.api_key
+            if self.settings.key_prefix:
+                value = f"{self.settings.key_prefix} {value}"
+            session.headers[self.settings.key_header] = value
 
         retry = Retry(
             total=3,
@@ -44,15 +46,21 @@ class APIClient:
         endpoint = endpoint or self.settings.endpoint
         url = f"{self.settings.base_url.rstrip('/')}/{endpoint.lstrip('/')}"
         params = {**self.settings.query_params, **(params or {})}
+        if self.settings.key_param:
+            params[self.settings.key_param] = self.settings.api_key
         logger.info("GET %s", url)
         try:
             response = self.session.get(url, params=params, timeout=self.settings.timeout)
             response.raise_for_status()
             return response.json()
         except requests.exceptions.JSONDecodeError as exc:
-            raise APIError(f"Response from {url} is not valid JSON") from exc
+            raise APIError(f"Response from {url} is not valid JSON") from None
+        except requests.HTTPError as exc:
+            # Do not include exc text: the URL may contain the API key.
+            status = exc.response.status_code if exc.response is not None else "unknown"
+            raise APIError(f"Request to {url} failed with HTTP status {status}") from None
         except requests.RequestException as exc:
-            raise APIError(f"Request to {url} failed: {exc}") from exc
+            raise APIError(f"Request to {url} failed: {type(exc).__name__}") from None
 
     def fetch_records(self, endpoint: str | None = None, params: dict[str, Any] | None = None) -> list[dict]:
         """Return the list of records, honoring the optional API_DATA_KEY."""
